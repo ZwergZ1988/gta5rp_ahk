@@ -454,6 +454,14 @@ toggle_gui(show_gui) {
                         ,[["cWhite","Также вы имеете право на адвоката. Если вам необходим адвокат, он будет для Вас запрошен. Вам ясны ваши права?"]]]
         add_text_to_gui(800, 900, mirandaLines)
 
+        colorHints := [[["cRed","XXX"],["cWhite"," - ФЕДЕРАЛЬНЫЕ"]]
+                      ,[["cYellow","XXX"],["cWhite"," - ФЕДЕРАЛЬНЫЕ/РЕГИОНАЛЬНЫЕ"]]
+                      ,[["cGreen","XXX"],["cWhite"," - РЕГИОНАЛЬНЫЕ"]]
+                      ,[["cBlue","XXX"],["cWhite"," - ФИНАНСОВЫЕ"]]
+                      ,[["cAqua","XXX"],["cWhite"," - ФИНАНСОВЫЕ/РЕГИОНАЛЬНЫЕ"]]
+                      ,[["cFuchsia","XXX"],["cWhite"," - АДМИНИСТРАТИВНЫЕ"]]]
+        add_text_to_gui(1600, 950, colorHints)
+
         WinSet, TransColor, %CustomColor% 180
         Gui, 1:Show, x0 y0 NoActivate, shpora
     } Else {
