@@ -33,7 +33,7 @@
 #NoEnv
 #SingleInstance, force
 #Warn
-;#IfWinActive, ahk_exe GTA5.exe
+#IfWinActive, ahk_exe GTA5.exe
 SendMode Input
 show_gui_2 := false
 
@@ -42,9 +42,10 @@ show_gui_2 := false
 show_gui_2 := toggle_gui(show_gui_2)
 Return
 
-!F3::
-nazhmi_code0_na_planshete()
-Return
+; Менюшка на клавише M появляется в разных местах, поэтому автоматическое прожатие кодов еще не работает
+;!F3::
+;nazhmi_code0_na_planshete()
+;Return
 
 
 ;F1::
