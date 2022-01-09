@@ -30,7 +30,17 @@
 ;
 ; Вопросы и предложения: ZwergZ#3560
 
+;OPTIMIZATIONS START
 #NoEnv
+#MaxHotkeysPerInterval 99000000
+#HotkeyInterval 99000000
+#KeyHistory 0
+ListLines Off
+Process, Priority, , H
+SetBatchLines, -1
+SetKeyDelay, -1, -1
+SetMouseDelay, -1
+SetDefaultMouseSpeed, 0
 #SingleInstance, force
 #Warn
 #IfWinActive, ahk_exe GTA5.exe
@@ -38,7 +48,7 @@ SendMode Input
 show_gui_2 := false
 
 
-!F2::
+!E::
 show_gui_2 := toggle_gui(show_gui_2)
 Return
 
@@ -534,7 +544,7 @@ toggle_gui(show_gui) {
                                     ,[["cWhite","► Поместить его в тюремную камеру (КПЗ)"]]
                                     ,[["cWhite","► Поместить его в следств. изол. (ФТ)"]]
                                     ,[["cWhite",""]]
-                                    ,[["cWhite","ЗОТ LLSD", "U"]]
+                                    ,[["cWhite","ЗОТ LSSD", "U"]]
                                    ,[["cWhite","► Губ., Виц.Губ., ГП, ЗГП"]]
                                    ,[["cWhite","► Мин.Внут.Безоп."]]
                                    ,[["cWhite","► Мэр округа Блейн"]]
