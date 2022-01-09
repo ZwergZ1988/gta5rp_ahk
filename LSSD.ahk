@@ -33,49 +33,21 @@
 #NoEnv
 #SingleInstance, force
 #Warn
-;#IfWinActive, ahk_exe GTA5.exe
-#IfWinActive, ahk_exe Code.exe
+#IfWinActive, ahk_exe GTA5.exe
 SendMode Input
 show_gui_2 := false
 
 
-!E::
+!F2::
 show_gui_2 := toggle_gui(show_gui_2)
 Return
 
-!F7::
-WinGetPos, windowX, windowY, windowW, windowH, ahk_exe GTA5.exe
-windowWhalf := windowW / 2
-windowHhalf := windowH / 2
-
-Sendinput, m
-
-Sleep 500
-
-planshetX := windowWhalf + 100
-planshetY := windowHhalf + 80 ;340
-MouseClick, Left, planshetX, planshetY
-
-Sleep 500
-
-code0X := windowWhalf - 285
-code0Y := windowHhalf - 30
-MouseClick, Left, code0X, code0Y
-
-Sleep 500
-
-submitCodeX := windowWhalf - 60
-submitCodeY := windowHhalf + 60
-MouseMove, submitCodeX, submitCodeY 
-
+!F3::
+nazhmi_code0_na_planshete()
 Return
 
 
-;-------------------
-;       CTRL
-;-------------------
-
-;^F1::
+;F1::
 ; при бинде на F1 будет вылетать в меню рейджа
 ;Return
 
@@ -92,7 +64,7 @@ paste_message_in_chat_and_submit("/b", ">>>>  ZwergZ#3560  <<<<")
 Return
 
 +F5::
-paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSSD | SPD | 004 ] .")
+paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSSD | SPD | 029 ] .")
 Return
 
 +F6::
@@ -103,12 +75,23 @@ Return
 +F7::
 paste_message_in_chat_and_submit("/me", "достал пару резиновых перчаток и надел перчатки на руки")
 paste_message_in_chat_and_submit("/me", "начал прохлопывать верхние и нижние слои одежды гражданина напротив")
-paste_message_in_chat_and_submit("/do", "При обыске были найдены документы.")
 Return
 
 +F8::
 paste_message_in_chat_and_submit("/me", "достал пару резиновых перчаток и надел их на руки")
 paste_message_in_chat_and_submit("/me", "легким движением открыл багажник, а затем ознакомился с его содержимым и изучил все труднодоступные места")
+Return
+
+!F7::
+paste_message_in_chat_and_submit("/do", "У охранника на стойке лежит бланк ареста и ручка.")
+paste_message_in_chat_and_submit("/me", "взял бланк ареста, ручку, и заполнил его, после чего положил обратно")
+Return
+
+!F8::
+paste_message_in_chat_and_submit("/do", "На поясе висит ключ-карта.")
+paste_message_in_chat_and_submit("/me", "взял ключ-карту и открыл ей дверь КПЗ")
+paste_message_in_chat_and_submit("/me", "завёл в КПЗ задержанного и снял с него наручники")
+paste_message_in_chat_and_submit("/me", "закрыл дверь КПЗ и повесил ключ-карту на пояс")
 Return
 
 +F9::
@@ -160,7 +143,7 @@ type_message_in_chat_and_submit(chat, message) {
     Sendinput, {t}
     sleep 100
     Sendinput, %chat% %message%{enter}
-    sleep 650
+    sleep 1000
     Return
 }
 
@@ -190,7 +173,7 @@ paste_message_in_chat_and_submit(chat, message) {
     Sendinput, %chat%{Space}
     paste(message)
     Sendinput, {enter}
-    sleep 650
+    sleep 1000
     Return
 }
 
@@ -200,7 +183,34 @@ paste_message_in_chat(chat, message) {
     sleep 100
     Sendinput, %chat%{Space}
     paste(message)
-    sleep 650
+    sleep 1000
+    Return
+}
+
+nazhmi_code0_na_planshete() {
+    WinGetPos, windowX, windowY, windowW, windowH, ahk_exe GTA5.exe
+    windowWhalf := windowW / 2
+    windowHhalf := windowH / 2
+
+    Sendinput, m
+
+    Sleep 500
+
+    planshetX := windowWhalf + 100
+    planshetY := windowHhalf + 80 ;340
+    MouseClick, Left, planshetX, planshetY
+
+    Sleep 500
+
+    code0X := windowWhalf - 285
+    code0Y := windowHhalf - 30
+    MouseClick, Left, code0X, code0Y
+
+    Sleep 500
+
+    submitCodeX := windowWhalf - 60
+    submitCodeY := windowHhalf + 60
+    MouseMove, submitCodeX, submitCodeY 
     Return
 }
 
@@ -213,7 +223,15 @@ add_text_to_gui(coordX, coordY, textLines) {
         for index2, guiLineText in guiLine {
             guiLineColor := guiLineText[1]
             guiLineTextText := guiLineText[2]
+            guiLineCustomStyle := guiLineText[3]
+            if (guiLineCustomStyle == "U") {
+                Gui, 1:Font, Underline
+            }
             Gui, 1:Add, Text, X+0 %guiLineColor%, %guiLineTextText%
+            if (guiLineCustomStyle == "U") {
+                Gui, 1:Font, Norm
+                Gui, 1:Font, w600
+            }
         }
         offsetY := offsetY + lineHeight
     }
@@ -228,10 +246,10 @@ add_law_chapter_to_gui(coordX, coordY, lawChapter) {
     
     guiLines := []
     if (StrLen(lawChapter[1]) != 0) {
-        guiLines.Push([["cWhite",lawChapter[1]]])
+        guiLines.Push([["cWhite",lawChapter[1], "U"]])
     }    
     if (StrLen(lawChapter[2]) != 0) {
-        guiLines.Push([["cWhite",lawChapter[2]]])
+        guiLines.Push([["cWhite",lawChapter[2], "U"]])
     }
     textHeight := add_text_to_gui(coordX+10, coordY, guiLines)
     offsetY := offsetY + textHeight
@@ -330,7 +348,8 @@ toggle_gui(show_gui) {
             ,["10.2",["Мошенничество *"],"до 4 лет (40 м)","FР"]
             ,["10.3",["Грабеж **"],"до 6 лет (60 м)","Р"]
             ,["10.4",["Разбой, то есть нападение в целях хищения чужого имущества **"],"до 12 лет (2 ч)","ФР"]
-            ,["10.5.1",["Угон Т/C"],"до 6 лет (60 м)","ФР"]
+            ,["10.5",["Угон Т/C без цели хищения"],"до 4 мес (40 м)", "Р"]
+            ,["10.5.1",["Угон Т/C c целью хищения"],"до 6 лет (60 м)","ФР"]
             ,["10.6",["Умышленное уничтожение чужого имущества"],"до 4 мес (40 м)","Р"]
             ,["10.7",["Умышл. уничт. или поврежд. чужого имущества (общеопасн. способом) **"],"до 12 лет (2 ч)","Ф"]]]
         lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
@@ -461,21 +480,23 @@ toggle_gui(show_gui) {
                                     ,[["cAqua","XXX"],["cWhite"," - ФИНАНСОВЫЕ/РЕГИОНАЛЬНЫЕ"]]
                                     ,[["cFuchsia","XXX"],["cWhite"," - АДМИНИСТРАТИВНЫЕ"]]])
 
-        add_text_to_gui(1550, 0, [[["cWhite","Основания на задержание"]]
+        add_text_to_gui(1550, 0, [[["cWhite","(Статья 10) Основания на задержание", "U"]]
                                    ,[["cWhite","► лицо застиг. в момент сов. прест."]]
                                    ,[["cWhite","► на подозр. будут следы прест."]]
-                                   ,[["cWhite","► есть 3 и более свидетелей"]]
                                    ,[["cWhite","► фото или видео фиксация"]]
-                                   ,[["cWhite","► есть нормативный документ"]]
-                                   ,[["cWhite","► есть ориентировка"]]])
+                                   ,[["cWhite","► ордер или указ"]]
+                                   ,[["cWhite","    подпис. Губ., Виц.Губ., ГП, ЗГП"]]
+                                   ,[["cWhite","    или реш. суда"]]
+                                   ,[["cWhite","► лицо в маске до уст. личн. + обыск"]]])
 
-        add_text_to_gui(1550, 120, [[["cWhite","Личн. обыск н  месте"]]
+        add_text_to_gui(1550, 140, [[["cWhite","Личн. обыск н  месте", "U"]]
                                    ,[["cWhite","► сопротивление, неподчинение"]]
                                    ,[["cWhite","► попытка бегства;"]]
                                    ,[["cWhite","► насилие или угроза насилия долж. лицу"]]
                                    ,[["cWhite","► маску, либо был вооружен"]]])
 
-        add_text_to_gui(1550, 220, [[["cWhite","Основания на обыск автомобиля"]]
+
+        add_text_to_gui(1550, 230, [[["cWhite","Основания на обыск автомобиля", "U"]]
                                    ,[["cWhite","► в п.3 ст.23 ПК (сопротивление при задержании; неподчинение;"]]
                                    ,[["cWhite","  попытка бегства; насилие или угрозу насилия долж. лицу;"]]
                                    ,[["cWhite","  маска, либо был вооружен)"]]
@@ -487,24 +508,46 @@ toggle_gui(show_gui) {
                                    ,[["cWhite","► Исключением при обыске является транспортное средство,"]]
                                    ,[["cWhite","  осуществляющее поставку медикаментов и/или материалов."]]])
 
-        add_text_to_gui(1550, 410, [[["cWhite","Порядок задержания"]]
+        add_text_to_gui(1550, 410, [[["cWhite","Порядок задержания", "U"]]
                                     ,[["cWhite","► Наручники"]]
                                     ,[["cWhite","► Представиться"]]
-                                    ,[["cWhite","► Первичный обыск (если нет угрозы)"]]
-                                    ,[["cWhite","► Разъяснить основания задержания"]]
-                                    ,[["cWhite","► Прочитать правило Миранды"]]
+                                    ,[["cWhite","► Доставить в помещение уполн.органа"]]
+                                    ,[["cWhite","► До окончания п.3:"]]
+                                    ,[["cWhite","    разъяснить основания задержания"]]
+                                    ,[["cWhite","    прочитать правило Миранды"]]
+                                    ,[["cWhite","► провести обыск"]]
                                     ,[["cWhite",""]]
-                                    ,[["cWhite","Порядок ареста"]]
+                                    ,[["cWhite","Расследование", "U"]]
+                                    ,[["cWhite","► Адвокат (5мин ответ, 15мин приезд)"]]
+                                    ,[["cWhite","    (обеспечить кофед., предоставить видео)"]]
+                                    ,[["cWhite","► 1 тел. звонок 5мин"]]
+                                    ,[["cWhite","► гос.сотр. -> руков.+прок. (10мин ожидание)"]]
+                                    ,[["cWhite","    если руков. не прибыло -> уведомить"]]
+                                    ,[["cWhite","► Принять решение (если гос.сотр.: прок. принимает решение)"]]
+                                    ,[["cWhite","► Посадить или опустить"]]
+                                    ,[["cWhite",""]]
+                                    ,[["cWhite","Порядок ареста", "U"]]
                                     ,[["cWhite","► Доставить  в место лиш. свободы;"]]
-                                    ,[["cWhite","► Разъяснить причину ареста"]]
-                                    ,[["cWhite","► Совершить вторичный обыск; изъять"]]
-                                    ,[["cWhite","► Поместить его в тюремную камеру."]]])
+                                    ,[["cWhite","► Провести обыск; изъять"]]
+                                    ,[["cWhite","► Поместить его в тюремную камеру (КПЗ)"]]
+                                    ,[["cWhite","► Поместить его в следств. изол. (ФТ)"]]])
 
 
+        add_text_to_gui(1550, 790, [[["cWhite","ЗОТ LLSD", "U"]]
+                                   ,[["cWhite","► Губ., Виц.Губ., ГП, ЗГП"]]
+                                   ,[["cWhite","► Мин.Внут.Безоп."]]
+                                   ,[["cWhite","► Мэр округа Блейн"]]
+                                   ,[["cWhite","► друг. Мин.+замы,сов.Губ и В.Губ"]]
+                                   ,[["cWhite","► CID/NSB ФРБ (для рассл. и зад. лиц)"]]
+                                   ,[["cWhite","► USMS (при контр. за LSSD)"]]
+                                   ,[["cWhite","► сотрудники оффиса ГП (при контр. за LSSD)"]]])
 
 
-
-
+        add_text_to_gui(800, 900, [[["cWhite","Неприкос", "U"]]
+                                   ,[["cWhite","► Губ., Виц.Губ. (+советники), ГП, ЗГП, Спик.Конгр.,"]]
+                                   ,[["cWhite","► Министры(+их замы), Гл.Колл.Адв., Мэры, Виц.Мэры"]]
+                                   ,[["cWhite","► Судьи, Дир.Секр.Служ., Дир.Служ.Марш."]]
+                                   ,[["cWhite","► Помощники ГП (во время исп.служ.об)"]]])
 
         WinSet, TransColor, %CustomColor% 180
         Gui, 1:Show, x0 y0 NoActivate, shpora
