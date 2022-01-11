@@ -43,30 +43,21 @@ SetMouseDelay, -1
 SetDefaultMouseSpeed, 0
 #SingleInstance, force
 #Warn
-;#IfWinActive, ahk_exe GTA5.exe
+#IfWinActive, ahk_exe GTA5.exe
 SendMode Input
-currentGUI := "DESTROYED"
 
-s := true
+currentGUI := 0
+build_gui_1()
+build_gui_2()
 
-!E::
-currentGUI := toggle_gui(currentGUI, "UGOLOVKA")
+!1::
+currentGUI := toggle_gui(currentGUI, 1)
 Return
 
-!W::
-currentGUI := toggle_gui(currentGUI, "TEST")
+!2::
+currentGUI := toggle_gui(currentGUI, 2)
 Return
 
-!F::
-if (s) {
-    Gui, 1:Hide
-    s := false
-} else {
-    Gui, 1:Show
-    s := true
-}
-
-Return
 
 ; Менюшка на клавише M появляется в разных местах, поэтому автоматическое прожатие кодов еще не работает
 ;!F3::
@@ -240,23 +231,23 @@ nazhmi_code0_na_planshete() {
     Return
 }
 
-add_text_to_gui(coordX, coordY, textLines) {
+add_text_to_gui(guiID, coordX, coordY, textLines) {
     lineHeight = 16
     offsetY = 0
     for index, guiLine in textLines {
         lineCoordinates := coordY+offsetY
-        Gui, 1:Add, Text, x%coordX% y%lineCoordinates% cWhite,
+        Gui, %guiID%:Add, Text, x%coordX% y%lineCoordinates% cWhite,
         for index2, guiLineText in guiLine {
             guiLineColor := guiLineText[1]
             guiLineTextText := guiLineText[2]
             guiLineCustomStyle := guiLineText[3]
             if (guiLineCustomStyle == "U") {
-                Gui, 1:Font, Underline
+                Gui, %guiID%:Font, Underline
             }
-            Gui, 1:Add, Text, X+0 %guiLineColor%, %guiLineTextText%
+            Gui, %guiID%:Add, Text, X+0 %guiLineColor%, %guiLineTextText%
             if (guiLineCustomStyle == "U") {
-                Gui, 1:Font, Norm
-                Gui, 1:Font, w600
+                Gui, %guiID%:Font, Norm
+                Gui, %guiID%:Font, w600
             }
         }
         offsetY := offsetY + lineHeight
@@ -264,7 +255,7 @@ add_text_to_gui(coordX, coordY, textLines) {
     Return offsetY
 }
 
-add_law_chapter_to_gui(coordX, coordY, lawChapter) {
+add_law_chapter_to_gui(guiID, coordX, coordY, lawChapter) {
     offsetY := 0
 
     lawNumberColumnWidth = 60
@@ -277,7 +268,7 @@ add_law_chapter_to_gui(coordX, coordY, lawChapter) {
     if (StrLen(lawChapter[2]) != 0) {
         guiLines.Push([["cWhite",lawChapter[2], "U"]])
     }
-    textHeight := add_text_to_gui(coordX+10, coordY, guiLines)
+    textHeight := add_text_to_gui(guiID, coordX+10, coordY, guiLines)
     offsetY := offsetY + textHeight
 
     for lawIndex, law in lawChapter[3] {
@@ -302,9 +293,9 @@ add_law_chapter_to_gui(coordX, coordY, lawChapter) {
         
 
         if (law[5] == "IMPORTANT") {
-            textHeight := add_text_to_gui(coordX, startOfLawY, [[[lawColor,law[1], "U"]]])
+            textHeight := add_text_to_gui(guiID, coordX, startOfLawY, [[[lawColor,law[1], "U"]]])
         } else {
-            textHeight := add_text_to_gui(coordX, startOfLawY, [[[lawColor,law[1]]]])
+            textHeight := add_text_to_gui(guiID, coordX, startOfLawY, [[[lawColor,law[1]]]])
         }
         offsetX := offsetX + lawNumberColumnWidth
 
@@ -312,57 +303,32 @@ add_law_chapter_to_gui(coordX, coordY, lawChapter) {
         Gui, 1:Add, Text, cGray x%lawTextColumnX% y%startOfLawY%, ............................................................................................................................................................
         
         for lawLineIndex, lawLine in law[2] {
-            textHeight := add_text_to_gui(coordX+offsetX, coordY+offsetY, [[["cWhite",lawLine]]])
+            textHeight := add_text_to_gui(guiID, coordX+offsetX, coordY+offsetY, [[["cWhite",lawLine]]])
             offsetY := offsetY + textHeight
         }
         offsetX := offsetX + lawTextColumnWidth
 
-        textHeight := add_text_to_gui(coordX+offsetX, startOfLawY, [[["cWhite",law[3]]]])
+        textHeight := add_text_to_gui(guiID, coordX+offsetX, startOfLawY, [[["cWhite",law[3]]]])
     }
 
     Return offsetY+10
 }
 
-toggle_gui(currentGUI, guiToShow) {
-    if (currentGUI != "DESTROYED") {
-        Gui 1:Destroy
+
+toggle_gui(currentGUI, guiIDToShow) {
+    if (currentGUI != 0) {
+        Gui %currentGUI%:Hide
     }
-    if (currentGUI != guiToShow) {
-        Switch guiToShow {
-            Case "UGOLOVKA":
-                show_gui_UGOLOVKA()
-                currentGUI := "UGOLOVKA"
-            Case "TEST":
-                show_gui_TEST()
-                currentGUI := "TEST"
-        }
+    if (currentGUI != guiIDToShow) {
+        Gui, %guiIDToShow%:Show, x0 y0 NoActivate, shpora%guiIDToShow%
+        currentGUI := guiIDToShow
     } else {
-        currentGUI := "DESTROYED"
+        currentGUI := 0
     }
     Return currentGUI
 }
 
-show_gui_TEST() {
-    Gui, 1:New, +LastFound +AlwaysOnTop -Caption +ToolWindow, shpora
-    CustomColor = EEAA99
-    Gui, 1:Color, black
-    Gui, 1:Font, s11
-    Gui, 1:Font, cWhite
-    Gui, 1:Font, w600
-    ;Gui, 1:Font,, Verdana
-    ;Gui, 1:Font,, Arial
-
-    add_text_to_gui(1400, 880, [[["cWhite","TEST", "U"]]
-                                ,[["cWhite","Привет мир"]]
-                                ,[["cWhite","Фу"]]
-                                ,[["cWhite","Бар"]]])
-
-
-    WinSet, TransColor, %CustomColor% 180
-    Gui, 1:Show, x0 y0 NoActivate, shpora
-}
-
-show_gui_UGOLOVKA() {
+build_gui_1() {
     Gui, 1:New, +LastFound +AlwaysOnTop -Caption +ToolWindow, shpora
     CustomColor = EEAA99
     Gui, 1:Color, black
@@ -385,7 +351,7 @@ show_gui_UGOLOVKA() {
         ,["6.6",["Причинение тяжкого вреда по неосторожности"],"4 мес (40 м)", "Р"]
         ,["6.7",["Причинение смерти по неосторожности"],"4 мес (40 м)", "Р"]
         ,["6.8",["Угроза расправой"],"3 мес (30 м)", "Р"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := ["Глава 7. Преступления против свободы"
@@ -393,7 +359,7 @@ show_gui_UGOLOVKA() {
         ,[["7.1",["Похищение человека ***"],"18 Лет (3 ч)", "Ф"]
         ,["7.2",["Клевета в отношении Гос.Служащего"],"до 4 лет (40 м)", "Р","IMPORTANT"]
         ,["7.3",["Клевета, содержащаяся в публичном выступлении *"],"до 4 лет (40 м)", "Р"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := ["Глава 8. Преступления против половой неприкосн. и половой свободы личности"
@@ -401,14 +367,14 @@ show_gui_UGOLOVKA() {
         ,[["8.1",["Изнасилование **"],"12 лет (2 ч)","ФР"]
         ,["8.2",["Изнасилование с причинением тяжкого вреда **"],"24 года (4 ч)","Ф"]
         ,["8.3" ,["Понуждение лица к половому сношению"],"до 4 мес (40 м)","Р"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := [""
         ,"Глава 9. Преступления против конституционных прав и свобод человека и гражданина"
         ,[["9.1",["Незак. собирание или распространение сведений о частной жизни лица"],"до 2 лет (20 м)","Ф"]
         ,["9.2",["Незак. проникновение в жилище"],"до 6 лет (60 м)","ФР"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := ["Раздел 4. Преступления в сфере экономики"
@@ -421,14 +387,14 @@ show_gui_UGOLOVKA() {
         ,["10.5.1",["Угон Т/C c целью хищения"],"до 6 лет (60 м)","ФР"]
         ,["10.6",["Умышленное уничтожение чужого имущества"],"до 4 мес (40 м)","Р"]
         ,["10.7",["Умышл. уничт. или поврежд. чужого имущества (общеопасн. способом) **"],"до 12 лет (2 ч)","Ф"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := [""
         ,"Глава 11. Преступления в сфере экономической деятельности"
         ,[["11.1",["Предпринимательсво без регистрации *"],"6 лет (60 м)","FР"]
         ,["11.6",["Браконьерство в особо крупн. масштабах (>30ти кг при люб.ловле)"],"до 6 лет (60 м)","FР","IMPORTANT"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
 
@@ -448,7 +414,7 @@ show_gui_UGOLOVKA() {
         ,["12.8",["Незаконное хранение оружия или патрон. *"],"до 12 лет (2 ч)","ФР","IMPORTANT"]
         ,["12.10",["Хищение оружия **"],"24 года (4 ч)","Ф"]
         ,["12.10.1",["Хищение оружия со стороны гос.служащего ***"],"24 года (4 ч)","Ф"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := [""
@@ -460,7 +426,7 @@ show_gui_UGOLOVKA() {
         ,["13.3",["Упаковка таблеток **"],"24 года (4 ч)","ФР"]
         ,["13.3.1",["Анальгетики свыше 5 шт.. (можно до 10 штук с Пометка G) *"],"6 лет (60 м)","ФР"]
         ,["13.4",["Организация проституции."],"до 4 лет (40 м)","Р"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionX := lawPositionX + 780
     lawPositionY := 0 
 
@@ -469,7 +435,7 @@ show_gui_UGOLOVKA() {
         ,"Глава 14. Прест. против основ конституционного строя и безопасности государства"
         ,[["14.3",["Разглашение гос.тайны ***"],"24 года (4 ч)","Ф"]
         ,["14.4",["Экстремизм **"],"до 24 лет (4 ч)","ФР"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
 
@@ -483,13 +449,13 @@ show_gui_UGOLOVKA() {
         ,["15.5",["Дача взятки должностному лицу, лично или через посредника. *"],"до 12 лет (2 ч)","ФР"]
         ,["15.6",["Халатность с сущ. нарушеним прав **"],"12 лет (2 ч)","ФР"]
         ,["15.6.1",["Неисполнение или ненадл. исп. гос.сотрудником своих обязанностей *"],"4 года (40 м)","Р"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := [""
         ,"Глава 16. Преступления против правосудия"
         ,[["16.14",["Уклонение от расследования, задержания и суда **"],"18 лет (3 ч)","Ф"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := [""
@@ -506,7 +472,7 @@ show_gui_UGOLOVKA() {
         ,["17.5",["Самоуправство **"],"12 лет (2 ч)","ФР"]
         ,["17.6",["Неповиновение законному требованию правомочного лица *"],"4 года (40 м)","ФР","IMPORTANT"]
         ,["17.7",["Отказ от оплаты штрафа *"],"4 года (40 м)","ФР","IMPORTANT"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
     lc := ["Административки"
@@ -534,23 +500,23 @@ show_gui_UGOLOVKA() {
         ,["23.1",["Браконьерство рыбалка (без лицензии до 30 кг и только на пирсе)"
                     ,"+ по 500$ за 1кг привышения по 4.2.1 закона о рыбалке (?????)"],"3 - 15 000 $","А"]
         ,["23.2",["Браконьерство охота (можно до 15 кг без лицензии)"],"5 - 20 000 $","А"]]]
-    lawChapterHeight := add_law_chapter_to_gui(lawPositionX,lawPositionY,lc)
+    lawChapterHeight := add_law_chapter_to_gui(1, lawPositionX,lawPositionY,lc)
     lawPositionY := lawPositionY + lawChapterHeight
 
 
-    add_text_to_gui(630, 1000, [[["cWhite","Вы имеете право хранить молчание. Всё, что вы скажете, может быть исп. против Вас."]]
+    add_text_to_gui(1, 630, 1000, [[["cWhite","Вы имеете право хранить молчание. Всё, что вы скажете, может быть исп. против Вас."]]
                                 ,[["cWhite","Вы имеете право на один телефонный звонок. Также вы имеете право на адвоката."]]
                                 ,[["cWhite","Если вам необходим адвокат, он будет для Вас запрошен. Вам ясны ваши права?"]]])
 
-    add_text_to_gui(5, 1000, [[["cRed","XXX"],["cWhite"," - ФЕДЕРАЛЬНЫЕ"]]
+    add_text_to_gui(1, 5, 1000, [[["cRed","XXX"],["cWhite"," - ФЕДЕРАЛЬНЫЕ"]]
                                 ,[["cYellow","XXX"],["cWhite"," - ФЕДЕРАЛЬНЫЕ/РЕГИОНАЛЬНЫЕ"]]
                                 ,[["cGreen","XXX"],["cWhite"," - РЕГИОНАЛЬНЫЕ"]]])
     
-    add_text_to_gui(300, 1000, [[["cBlue","XXX"],["cWhite"," - ФИНАНСОВЫЕ"]]
+    add_text_to_gui(1, 300, 1000, [[["cBlue","XXX"],["cWhite"," - ФИНАНСОВЫЕ"]]
                                 ,[["cAqua","XXX"],["cWhite"," - ФИНАНСОВЫЕ/РЕГИОНАЛЬНЫЕ"]]
                                 ,[["cFuchsia","XXX"],["cWhite"," - АДМИНИСТРАТИВНЫЕ"]]])
 
-    add_text_to_gui(1550, 0, [[["cWhite","(Статья 10) Основания на задержание", "U"]]
+    add_text_to_gui(1, 1550, 0, [[["cWhite","(Статья 10) Основания на задержание", "U"]]
                                 ,[["cWhite","► лицо застиг. в момент сов. прест."]]
                                 ,[["cWhite","► на подозр. будут следы прест."]]
                                 ,[["cWhite","► фото или видео фиксация"]]
@@ -612,20 +578,20 @@ show_gui_UGOLOVKA() {
                                 ,[["cWhite","► сотрудники оффиса ГП (при контр. за LSSD)"]]])
 
 
-    add_text_to_gui(780, 880, [[["cWhite","Неприкос", "U"]]
+    add_text_to_gui(1, 780, 880, [[["cWhite","Неприкос", "U"]]
                                 ,[["cWhite","► Губ., Виц.Губ. (+советники), ГП, ЗГП, Спик.Конгр.,"]]
                                 ,[["cWhite","► Министры(+их замы), Гл.Колл.Адв., Мэры, Виц.Мэры"]]
                                 ,[["cWhite","► Судьи, Дир.Секр.Служ., Дир.Служ.Марш."]]
                                 ,[["cWhite","► Помощники ГП (во время исп.служ.об)"]]])
 
-    add_text_to_gui(1190, 880, [[["cWhite","Коды", "U"]]
+    add_text_to_gui(1, 1190, 880, [[["cWhite","Коды", "U"]]
                                 ,[["cWhite","0 сотрудник ранен/убит"]]
                                 ,[["cWhite","1 стрельба"]]
                                 ,[["cWhite","2 помощь с мигалками"]]
                                 ,[["cWhite","3 эвакуация сотр./задерж."]]
                                 ,[["cWhite","4 всё хорошо"]]])
 
-    add_text_to_gui(1400, 880, [[["cWhite","Тен-Коды", "U"]]
+    add_text_to_gui(1, 1400, 880, [[["cWhite","Тен-Коды", "U"]]
                                 ,[["cWhite","10-0 - Отмена"]]
                                 ,[["cWhite","10-3 - Радиотишина"]]
                                 ,[["cWhite","10-4 - Принял"]]
@@ -651,7 +617,23 @@ show_gui_UGOLOVKA() {
 ;10-77 - Расчётное время прибытия
 
     WinSet, TransColor, %CustomColor% 180
-    Gui, 1:Show, x0 y0 NoActivate, shpora
 }
 
-;WinSet, AlwaysOnTop, toggle, YOUWINDOW TITLE HERE
+build_gui_2() {
+    Gui, 2:New, +LastFound +AlwaysOnTop -Caption +ToolWindow, shpora
+    CustomColor = EEAA99
+    Gui, 2:Color, black
+    Gui, 2:Font, s11
+    Gui, 2:Font, cWhite
+    Gui, 2:Font, w600
+    ;Gui, 2:Font,, Verdana
+    ;Gui, 2:Font,, Arial
+
+    add_text_to_gui(2, 1400, 880, [[["cWhite","TEST", "U"]]
+                                ,[["cWhite","Привет мир"]]
+                                ,[["cWhite","Фу"]]
+                                ,[["cWhite","Бар"]]])
+
+
+    WinSet, TransColor, %CustomColor% 180
+}
