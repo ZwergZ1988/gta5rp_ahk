@@ -50,6 +50,9 @@ currentGUI := 0
 build_gui_1()
 build_gui_2()
 
+timerStatus := "DISABLED"
+build_timer()
+
 !1::
 currentGUI := toggle_gui(currentGUI, 1)
 Return
@@ -58,6 +61,13 @@ Return
 currentGUI := toggle_gui(currentGUI, 2)
 Return
 
+!9::
+    timerStatus := "START"
+Return
+
+!0::
+    timerStatus := "DISABLED"
+Return
 
 ; Менюшка на клавише M появляется в разных местах, поэтому автоматическое прожатие кодов еще не работает
 ;!F3::
@@ -636,4 +646,57 @@ build_gui_2() {
 
 
     WinSet, TransColor, %CustomColor% 180
+}
+
+build_timer() {
+    global timerStatus
+    
+    While (true) {
+        if (timerStatus == "START") {
+            startTimeStamp := 0
+            FormatTime, timeBuffer , , HH
+            startTimeStamp := startTimeStamp + timeBuffer * 3600
+            FormatTime, timeBuffer , , mm
+            startTimeStamp := startTimeStamp + timeBuffer * 60
+            FormatTime, timeBuffer , , ss
+            startTimeStamp := startTimeStamp + timeBuffer
+            timerStatus := "STARTED"
+        }
+        if (timerStatus == "STARTED") {
+            Gui, 9:New, +LastFound +AlwaysOnTop -Caption +ToolWindow, timeGui
+            Gui, 9:Color, black
+            Gui, 9:Font, s16
+            Gui, 9:Font, cWhite
+            Gui, 9:Font, w600
+            ;Gui, 9:Font,, Verdana
+            ;Gui, 9:Font,, Arial
+
+            timeStamp := 0
+            FormatTime, timeBuffer , , HH
+            timeStamp := timeStamp + timeBuffer * 3600
+            FormatTime, timeBuffer , , mm
+            timeStamp := timeStamp + timeBuffer * 60
+            FormatTime, timeBuffer , , ss
+            timeStamp := timeStamp + timeBuffer
+
+            secondsGone := timeStamp - startTimeStamp
+            hoursGone := Floor(secondsGone / 3600)
+            secondsGone := secondsGone - hoursGone * 3600
+            minutesGone := Floor(secondsGone / 60)
+            secondsGone := secondsGone - minutesGone * 60
+
+            hoursGone := SubStr("0" . hoursGone, -1)
+            minutesGone := SubStr("0" . minutesGone, -1)
+            secondsGone := SubStr("0" . secondsGone, -1)
+
+            timeGone = %hoursGone%:%minutesGone%:%secondsGone%
+
+            add_text_to_gui(9, 0, 11, [[["cWhite",timeGone]]])
+
+            WinSet, TransColor, FF0000 180
+            Gui, 9:Show, x1780 y960 NoActivate, timeGui
+        }
+        Sleep 1000
+        Gui, 9:Destroy
+    }
 }
