@@ -30,7 +30,6 @@
 ;
 ; Вопросы и предложения: ZwergZ#3560
 
-;OPTIMIZATIONS START
 #NoEnv
 #MaxHotkeysPerInterval 99000000
 #HotkeyInterval 99000000
@@ -54,19 +53,19 @@ timerStatus := "DISABLED"
 build_timer()
 
 !1::
-currentGUI := toggle_gui(currentGUI, 1)
+toggle_gui(1)
 Return
 
 !2::
-currentGUI := toggle_gui(currentGUI, 2)
+toggle_gui(2)
 Return
 
 !9::
-    timerStatus := "START"
+start_timer()
 Return
 
 !0::
-    timerStatus := "DISABLED"
+disable_timer()
 Return
 
 ; Менюшка на клавише M появляется в разных местах, поэтому автоматическое прожатие кодов еще не работает
@@ -143,9 +142,12 @@ Reload
 +F12::Pause
 
 
-; --------------------------------------------------------------------
-; Далее следуют функции, написанные для более удобного создания биндов
-; --------------------------------------------------------------------
+; ----------------------------------------------------------------------------------------
+;
+;          Далее следуют функции, написанные для более удобного создания биндов
+;                         Дальше меняем что-то, только если шарим
+;
+; ----------------------------------------------------------------------------------------
 
 ; Переключить раскладку клавиатуры на русскую
 swith_to_RU() {
@@ -325,7 +327,8 @@ add_law_chapter_to_gui(guiID, coordX, coordY, lawChapter) {
 }
 
 
-toggle_gui(currentGUI, guiIDToShow) {
+toggle_gui(guiIDToShow) {
+    global currentGUI
     if (currentGUI != 0) {
         Gui %currentGUI%:Hide
     }
@@ -335,7 +338,6 @@ toggle_gui(currentGUI, guiIDToShow) {
     } else {
         currentGUI := 0
     }
-    Return currentGUI
 }
 
 build_gui_1() {
@@ -696,7 +698,20 @@ build_timer() {
             WinSet, TransColor, FF0000 180
             Gui, 9:Show, x1780 y960 NoActivate, timeGui
         }
+        if (timerStatus == "DISABLE") {
+            Gui, 9:Destroy
+            timerStatus := "DISABLED"
+        }
         Sleep 1000
-        Gui, 9:Destroy
     }
+}
+
+start_timer() {
+    global timerStatus
+    timerStatus := "START"
+}
+
+disable_timer() {
+    global timerStatus
+    timerStatus := "DISABLE"
 }
