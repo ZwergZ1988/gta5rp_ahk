@@ -675,6 +675,30 @@ build_gui_2() {
                             ,[["cWhite","VAGOS - желтый"]]
                             ,[["cWhite","FAMIL - зелёный"]]])
 
+    add_text_to_gui(2, 1700, 10, [[["cWhite","Alt + R     Reload/Stop"]]
+                                ,[[""]]
+                                ,[["cWhite","Alt + 1     toggle_gui(1)"]]
+                                ,[["cWhite","Alt + 2     toggle_gui(2)"]]
+                                ,[["cWhite","Alt + 9     start_timer()"]]
+                                ,[["cWhite","Alt + 0     disable_timer()"]]
+                                ,[[""]]
+                                ,[["cWhite","Alt + F5    миранда"]]
+                                ,[["cWhite","Alt + F7    арест ФТ"]]
+                                ,[["cWhite","Alt + F8    арест КПЗ"]]
+                                ,[[""]]
+                                ,[["cWhite","Shift + F2  ((откат))"]]
+                                ,[["cWhite","Shift + F3  ((голос сломался))"]]
+                                ,[["cWhite","Shift + F4  ((discord))"]]
+                                ,[["cWhite","Shift + F5  жетон"]]
+                                ,[["cWhite","Shift + F6  какой жетон?"]]
+                                ,[["cWhite","Shift + F7  обыск"]]
+                                ,[["cWhite","Shift + F8  обыск багажник"]]
+                                ,[["cWhite","Shift + F9  проверка угона"]]
+                                ,[["cWhite","Shift + F10 ((заливаю за ПГ))"]]
+                                ,[["cWhite","Shift + F11 мегафон"]]
+                                ,[["cWhite","Shift + F12 Pause"]]])
+
+
 
     lawPositionX := 10
     lawPositionY := 150
