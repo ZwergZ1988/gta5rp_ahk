@@ -676,16 +676,16 @@ build_gui_2() {
                             ,[["cWhite","FAMIL - зелёный"]]])
 
     add_text_to_gui(2, 1700, 10, [[["cWhite","Alt + R     Reload/Stop"]]
-                                ,[[""]]
+                                ,[["cWhite",""]]
                                 ,[["cWhite","Alt + 1     toggle_gui(1)"]]
                                 ,[["cWhite","Alt + 2     toggle_gui(2)"]]
                                 ,[["cWhite","Alt + 9     start_timer()"]]
                                 ,[["cWhite","Alt + 0     disable_timer()"]]
-                                ,[[""]]
+                                ,[["cWhite",""]]
                                 ,[["cWhite","Alt + F5    миранда"]]
                                 ,[["cWhite","Alt + F7    арест ФТ"]]
                                 ,[["cWhite","Alt + F8    арест КПЗ"]]
-                                ,[[""]]
+                                ,[["cWhite",""]]
                                 ,[["cWhite","Shift + F2  ((откат))"]]
                                 ,[["cWhite","Shift + F3  ((голос сломался))"]]
                                 ,[["cWhite","Shift + F4  ((discord))"]]
@@ -697,6 +697,27 @@ build_gui_2() {
                                 ,[["cWhite","Shift + F10 ((заливаю за ПГ))"]]
                                 ,[["cWhite","Shift + F11 мегафон"]]
                                 ,[["cWhite","Shift + F12 Pause"]]])
+
+    add_text_to_gui(2, 10, 800, [[["cWhite","Фарм BP", "U"]]
+                                 ,[["cWhite","- 3 часа в онлайне 2/4 BP"]]
+                                 ,[["cWhite","- Перенести 1 ящик с подлодки  2/4 BP"]]
+                                 ,[["cWhite","- Нули в казино  2/4 BP"]]
+                                 ,[["cWhite","- Успешная тренировка в тире  1/2 BP"]]
+                                 ,[["cWhite","- Купить лотерейный билет  1/2 BP"]]
+                                 ,[["cWhite","- 10 действий на ферме  1/2 BP"]]
+                                 ,[["cWhite","- Проехать 1 уличную гонку  1/2 BP"]]
+                                 ,[["cWhite","   (через телефон, ставка минимум 1000$)"]]
+                                 ,[["cWhite","- Закрыть 5 кодов в сил.структурах  2/4 BP"]]])
+
+
+
+
+
+
+
+
+
+
 
 
 
