@@ -90,7 +90,7 @@ paste_message_in_chat_and_submit("/b", ">>>>  ZwergZ#3560  <<<<")
 Return
 
 +F5::
-paste_message_in_chat_and_submit("/do", "На форме жетон:  [ LSSD | SPD | 029 | D.D. ] .")
+paste_message_in_chat_and_submit("/do", "На форме жетон:  [ LSSD | SPD | 003 | D.D. ] .")
 Return
 
 +F6::
