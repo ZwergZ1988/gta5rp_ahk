@@ -38,7 +38,7 @@ currentGUIAktion := "DESTROY"
 gui1 := build_gui_1()
 gui2 := build_gui_2()
 
-timerStatus := "CREATE"
+timerStatus := "DISABLED"
 timerGui := build_timer()
 
 !1::
@@ -530,14 +530,8 @@ build_law_search_gui() {
 
 build_timer() {
     global timerStatus
-    
+    myGui := Gui()
     While (true) {
-        if (timerStatus == "CREATE") {
-            myGui := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
-            myGui.BackColor := "black"
-            
-            timerStatus := "DISABLED"
-        }
         if (timerStatus == "START") {
             startTimeStamp := 0
             timeBuffer := FormatTime(, "HH")
@@ -568,6 +562,11 @@ build_timer() {
             secondsGone := SubStr("0" . secondsGone, -2)
 
             timeGone := hoursGone . ":" . minutesGone . ":" . secondsGone
+
+            myGui.Destroy()
+
+            myGui := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
+            myGui.BackColor := "black"
 
             add_text_to_gui(myGui, 15, 10, [{text:timeGone, height:20}])
 
