@@ -34,6 +34,7 @@
 SendMode("Input")
 
 currentGUI := Gui()
+testGUI := Gui()
 currentGUIAktion := "DESTROY"
 gui1 := build_gui_1()
 gui2 := build_gui_2()
@@ -66,6 +67,23 @@ timerGui := build_timer()
     
     currentGUI := build_law_search_gui()
     currentGUIAktion := "DESTROY"
+}
+
+!8::
+{
+    global testGUI
+    testGUI.Destroy()
+
+    testGUI := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
+    testGUI.BackColor := "black"
+
+    CoordMode("Mouse", "Screen")
+    MouseGetPos(&mouseXpos, &mouseYpos)
+
+    add_text_to_gui(testGUI, 15, 10, [{text:"x" . mouseXpos . " y" . mouseYpos}])
+
+    WinSetTransparent(180, testGUI)
+    testGUI.Show("x" . mouseXpos . " y" . mouseYpos . " NoActivate")
 }
 
 !9::
