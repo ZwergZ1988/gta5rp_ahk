@@ -69,7 +69,7 @@ timerGui := build_timer()
     currentGUIAktion := "DESTROY"
 }
 
-!8::
+!4::
 {
     global testGUI
     testGUI.Destroy()
@@ -78,12 +78,87 @@ timerGui := build_timer()
     testGUI.BackColor := "black"
 
     CoordMode("Mouse", "Screen")
-    MouseGetPos(&mouseXpos, &mouseYpos)
+    MouseGetPos(&mouseXposScreen, &mouseYposScreen)
 
-    add_text_to_gui(testGUI, 15, 10, [{text:"x" . mouseXpos . " y" . mouseYpos}])
+    ;       y876
+    ; x31           x296
+    ;       y1046
+
+    CoordMode("Mouse", "Window")
+    MouseGetPos(&mouseXposWindow, &mouseYposWindow)
+
+    c := PixelGetColor(mouseXposWindow, mouseYposWindow)
+
+    add_text_to_gui(testGUI, 15, 10, [{text:"x" . mouseXposScreen . " y" . mouseYposScreen . " x" . mouseXposWindow . " y" . mouseYposWindow . " " . c}])
 
     WinSetTransparent(180, testGUI)
-    testGUI.Show("x" . mouseXpos . " y" . mouseYpos . " NoActivate")
+    testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
+}
+
+!5::
+{
+    ;       y876
+    ; x31           x296
+    ;       y1046
+
+    xPos := 31
+    yPos := 876
+    nPositions := []
+    while (xPos <= 296) {
+        c := PixelGetColor(xPos, yPos)
+        if (c == "0x000000") {
+            nPositions.push({x:xPos, y:yPos})
+        }
+        xPos := xPos + 5
+    }
+    while (yPos <= 1046) {
+        c := PixelGetColor(xPos, yPos)
+        if (c == "0x000000") {
+            nPositions.push({x:xPos, y:yPos})
+        }
+        yPos := yPos + 5
+    }
+    while (xPos >= 31) {
+        c := PixelGetColor(xPos, yPos)
+        if (c == "0x000000") {
+            nPositions.push({x:xPos, y:yPos})
+        }
+        xPos := xPos - 5
+    }
+    while (yPos >= 876) {
+        c := PixelGetColor(xPos, yPos)
+        if (c == "0x000000") {
+            nPositions.push({x:xPos, y:yPos})
+        }
+        yPos := yPos - 5
+    }
+    
+    global testGUI
+    testGUI.Destroy()
+
+    testGUI := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
+    testGUI.BackColor := "black"
+
+    yOffset := 0
+    cc := 0
+    xPosAv := 0
+    yPosAv := 0
+    for nPosition in nPositions {
+        yOffset := yOffset + add_text_to_gui(testGUI, 15, 10 + yOffset, [{text:"x" . nPosition.x . " y" . nPosition.y}])
+
+        cc := cc + 1
+        xPosAv := xPosAv + nPosition.x
+        yPosAv := yPosAv + nPosition.y
+    }
+    xPosAv := Round(xPosAv/cc)
+    yPosAv := Round(yPosAv/cc)
+    add_text_to_gui(testGUI, 15, 10 + yOffset + 15, [{text:"x" . xPosAv . " y" . yPosAv}])
+    
+    CoordMode("Mouse", "Screen")
+    MouseGetPos(&mouseXposScreen, &mouseYposScreen)
+
+    WinSetTransparent(180, testGUI)
+    testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
 }
 
 !9::
