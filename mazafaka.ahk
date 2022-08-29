@@ -24,7 +24,7 @@ podrubay() {
     global mazafaka
 
     while (true) {
-        if (berserkMode := "ON") { ; Если включен берсерк -> делай код
+        if (berserkMode == "ON") { ; Если включен берсерк -> делай код
             currentColor := PixelGetColor(960, 540)
             if (currentColor == neededColor) { ; если тип в перекрестии -> врубай мазафаку
                 if (mazafaka == "UP") { ; если мазафака вверху -> зажми мазафаку
