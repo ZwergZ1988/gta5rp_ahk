@@ -7,6 +7,8 @@
 scpriptsRunning := []
 scpriptsRunning := run_parallel_script("timer.ahk", scpriptsRunning)
 scpriptsRunning := run_parallel_script("info_display.ahk", scpriptsRunning)
+scpriptsRunning := run_parallel_script("trigger.ahk", scpriptsRunning)
+scpriptsRunning := run_parallel_script("trigger_watcher.ahk", scpriptsRunning)
 
 
 !1::
@@ -27,6 +29,11 @@ scpriptsRunning := run_parallel_script("info_display.ahk", scpriptsRunning)
 !4::
 {
     show_helper_gui()
+}
+
+!5::
+{
+    send_message_to_parallel_script("trigger_watcher.ahk", 1, 0)
 }
 
 !9::

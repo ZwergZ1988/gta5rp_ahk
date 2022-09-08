@@ -1,26 +1,40 @@
+#SingleInstance
 #Include  "%A_ScriptDir%\..\include\run.ahk"
 
-triggerType := "OFF"
+triggerMode := "OFF"
+triggerModeReceived := "OFF"
+oldTriggerMode := "OFF" 
 
-OnMessage(0x0400, receiveNewTriggerType)
+OnMessage(0x0400, receiveNewTriggerMode)
 
 while(true) {
-    swith (triggerType) {
+    triggerMode := triggerModeReceived
+    switch (triggerMode) {
         case "BFT": ; brute force taping
-            ; do taping
+            MouseClick("Left", , , , , "D", )
+            Sleep(100)
+            MouseClick("Left", , , , , "U", )            
+        case "HLD": ; hold
+            if (oldTriggerMode != triggerMode) {
+                MouseClick("Left", , , , , "D", )
+            }
+        case "OFF":
+            if (oldTriggerMode == "HLD") {
+                MouseClick("Left", , , , , "U", )
+            }
     }
+    oldTriggerMode := triggerMode
 }
 
-receiveNewTriggerType(wParam, lParam, msg, hwnd) {
-    global triggerType
+receiveNewTriggerMode(wParam, lParam, msg, hwnd) {
+    global triggerModeReceived
 
-    switch(wParam) {
+    switch (wParam) {
         case 0:
-            triggerType := "OFF"
+            triggerModeReceived := "OFF"
         case 1:
-            triggerType := "BFT"
+            triggerModeReceived := "BFT"
+        case 2:
+            triggerModeReceived := "HLD"
     }
 }
-
-
-
