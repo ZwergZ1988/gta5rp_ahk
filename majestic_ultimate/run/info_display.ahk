@@ -1,27 +1,49 @@
-#Include  "%A_ScriptDir%\..\include\gui.ahk"
 #SingleInstance
+#Include  "%A_ScriptDir%\..\include\gui.ahk"
+#Include  "%A_ScriptDir%\..\include\config.ahk"
 OnMessage(0x0400, receiveNewInfo)
 
-infoRows := [
-    "INFO",
-    ""
-]
+set_config_prafix("..\")
+displayPosX := config_read("INFO DISPLAY", "position_x")
+displayPosY := config_read("INFO DISPLAY", "position_y")
+
+infoData := {
+    title: "INFO",
+    trigger: {status: "OFF", color: "cRed"}
+}
 
 build_info_display()
 
 receiveNewInfo(wParam, lParam, msg, hwnd) {
-    global timerStatus
-    if (lParam == 1) {
-        infoRows[2] := "START"
-    }
-    if (lParam == 2) {
-        infoRows[2] := "DISABLE"
+    global infoData
+
+    switch (wParam) {
+        case 1:
+            switch (lParam) {
+                case 0:
+                    infoData.trigger.status := "OFF"
+                    infoData.trigger.color := "cRed"
+                case 1:
+                    infoData.trigger.status := "ON"
+                    infoData.trigger.color := "cGreen"
+            }
     }
     return true
 }
 
+convert_info_data_to_text_rows(infoData) {
+    textRows := []
+
+    textRows.push({x:7, y:7, rows:[{text: infoData.title, style: "U"}]})
+    
+    textRows.push({x:7, y:21, rows:[{text: "TRIGGER"}]})
+    textRows.push({x:70, y:21, rows:[{text: infoData.trigger.status, color:infoData.trigger.color}]})
+
+    return textRows
+}
+
 build_info_display() {
-    global infoRows
+    global infoData
     myGui := Gui()
     while (true) {
         myGui.Destroy()
@@ -30,14 +52,13 @@ build_info_display() {
         myGui.BackColor := "black"
 
 
-        yPosition := 5
+        infoRows := convert_info_data_to_text_rows(infoData)
         for infoRow in infoRows {
-            add_text_to_gui(myGui, 7, yPosition, [{text:infoRow, height:10}])
-            yPosition := yPosition + 15
+            add_text_to_gui(myGui, infoRow.x, infoRow.y, infoRow.rows)
         }
 
         WinSetTransparent(180, myGui)
-        myGui.Show("x-1911 y464 NoActivate")
+        myGui.Show("x" . displayPosX . " y" . displayPosY . " NoActivate")
 
         Sleep 1000
     }

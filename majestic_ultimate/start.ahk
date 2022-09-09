@@ -23,7 +23,7 @@ scpriptsRunning := run_parallel_script("trigger_watcher.ahk", scpriptsRunning)
 
 !3::
 {
-    send_message_to_parallel_script("info_display.ahk", 0, 2)
+    toggle_trigger()
 }
 
 !4::
@@ -33,7 +33,7 @@ scpriptsRunning := run_parallel_script("trigger_watcher.ahk", scpriptsRunning)
 
 !5::
 {
-    send_message_to_parallel_script("trigger_watcher.ahk", 1, 0)
+    toggle_trigger()
 }
 
 !9::
@@ -56,4 +56,15 @@ scpriptsRunning := run_parallel_script("trigger_watcher.ahk", scpriptsRunning)
     global scpriptsRunning
     quit_all_parallel_scripts(scpriptsRunning)
     ExitApp 
+}
+
+toggle_trigger() {
+    static triggerOnOff := 0
+    switch (triggerOnOff) {
+        case 1:
+            triggerOnOff := 0
+        case 0:
+            triggerOnOff := 1
+    }
+    send_message_to_parallel_script("trigger_watcher.ahk", triggerOnOff, 0)    
 }

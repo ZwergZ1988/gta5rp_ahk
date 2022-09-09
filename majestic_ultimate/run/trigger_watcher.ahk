@@ -39,7 +39,9 @@ receiveTriggerOnOff(wParam, lParam, msg, hwnd) {
     switch (wParam) {
         case 0:
             triggerOnOff := "OFF"
+            send_message_to_parallel_script("info_display.ahk", 1, 0)
         case 1:
             triggerOnOff := "ON"
+            send_message_to_parallel_script("info_display.ahk", 1, 1)
     }
 }

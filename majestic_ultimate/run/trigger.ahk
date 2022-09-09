@@ -13,7 +13,7 @@ while(true) {
         case "BFT": ; brute force taping
             MouseClick("Left", , , , , "D", )
             Sleep(100)
-            MouseClick("Left", , , , , "U", )            
+            MouseClick("Left", , , , , "U", )
         case "HLD": ; hold
             if (oldTriggerMode != triggerMode) {
                 MouseClick("Left", , , , , "D", )
