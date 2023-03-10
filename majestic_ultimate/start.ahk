@@ -3,12 +3,15 @@
 #Include  "%A_ScriptDir%\include\text.ahk"
 #Include  "%A_ScriptDir%\include\run.ahk"
 #Include  "%A_ScriptDir%\include\helper.ahk"
+#Include  "%A_ScriptDir%\include\swap.ahk"
 
 scpriptsRunning := []
 scpriptsRunning := run_parallel_script("timer.ahk", scpriptsRunning)
 scpriptsRunning := run_parallel_script("info_display.ahk", scpriptsRunning)
 scpriptsRunning := run_parallel_script("trigger.ahk", scpriptsRunning)
 scpriptsRunning := run_parallel_script("trigger_watcher.ahk", scpriptsRunning)
+scpriptsRunning := run_parallel_script("health.ahk", scpriptsRunning)
+;scpriptsRunning := run_parallel_script("rybalka.ahk", scpriptsRunning)
 
 
 !1::
@@ -33,7 +36,22 @@ scpriptsRunning := run_parallel_script("trigger_watcher.ahk", scpriptsRunning)
 
 !5::
 {
-    toggle_trigger()
+    take_smg()
+}
+
+!6::
+{
+    take_saiga()
+}
+
+!7::
+{
+    take_carabine()
+}
+
+!8::
+{
+    swap_all()
 }
 
 !9::

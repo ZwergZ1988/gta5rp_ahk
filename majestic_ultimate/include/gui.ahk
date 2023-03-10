@@ -127,6 +127,17 @@ build_gui_debug(textToShow) {
     return myGui
 }
 
+draw_rectangle(x, y, width, height, c := "red", transp := 180) {
+    myGui := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Found Zakon")
+    myGui.BackColor := c
+
+    add_text_to_gui(myGui, 5, 5, [{text:" ", height:1, color: "cBlue"}])
+
+    WinSetTransparent(transp, myGui)
+    myGui.Show("x" . x . " y" . y . " w" . width . " h" . height . " NoActivate")
+    return myGui
+}
+
 toggle_gui(tGui) {
     global currentGUI
     global currentGUIAktion

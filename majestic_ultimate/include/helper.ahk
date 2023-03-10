@@ -1,5 +1,6 @@
 #Include  "%A_ScriptDir%\include\gui.ahk"
 
+CoordMode("Pixel", "Screen")
 testGUI := Gui()
 
 show_helper_gui() {
@@ -15,7 +16,7 @@ show_helper_gui() {
     CoordMode("Mouse", "Window")
     MouseGetPos(&mouseXposWindow, &mouseYposWindow)
 
-    c := PixelGetColor(mouseXposWindow, mouseYposWindow)
+    c := PixelGetColor(mouseXposScreen, mouseYposScreen)
 
     add_text_to_gui(testGUI, 15, 10, [{text:"x" . mouseXposScreen . " y" . mouseYposScreen . " x" . mouseXposWindow . " y" . mouseYposWindow . " " . c}])
 

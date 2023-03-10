@@ -97,41 +97,45 @@ timerGui := build_timer()
 
 !5::
 {
-    ;       y876
-    ; x31           x296
-    ;       y1046
+    ;       y896
+    ; x2           x267
+    ;       y1063
 
-    xPos := 31
-    yPos := 876
+    xPos := 2
+    yPos := 896
     nPositions := []
-    while (xPos <= 296) {
+    while (xPos <= 267) {
         c := PixelGetColor(xPos, yPos)
         if (c == "0x000000") {
             nPositions.push({x:xPos, y:yPos})
         }
         xPos := xPos + 5
     }
-    while (yPos <= 1046) {
+    xPos := xPos - 5
+    while (yPos <= 1063) {
         c := PixelGetColor(xPos, yPos)
         if (c == "0x000000") {
             nPositions.push({x:xPos, y:yPos})
         }
         yPos := yPos + 5
     }
-    while (xPos >= 31) {
+    yPos := yPos - 5
+    while (xPos >= 2) {
         c := PixelGetColor(xPos, yPos)
         if (c == "0x000000") {
             nPositions.push({x:xPos, y:yPos})
         }
         xPos := xPos - 5
     }
-    while (yPos >= 876) {
+    xPos := xPos + 5
+    while (yPos >= 896) {
         c := PixelGetColor(xPos, yPos)
         if (c == "0x000000") {
             nPositions.push({x:xPos, y:yPos})
         }
         yPos := yPos - 5
     }
+    yPos := yPos + 5
     
     global testGUI
     testGUI.Destroy()
@@ -159,6 +163,9 @@ timerGui := build_timer()
 
     WinSetTransparent(180, testGUI)
     testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
+
+    SendMode("Play")
+    MouseMove(10, 0, 50, "R")
 }
 
 !9::
