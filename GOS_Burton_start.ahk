@@ -411,8 +411,11 @@ timerGui := build_timer()
 
         if (currentGUIAktion == "DESTROY") {
             currentGUI.Destroy()
-        } else {
+        }
+
+        if (currentGUIAktion == "HIDE") {
             currentGUI.Hide()
+            currentGUIAktion := "HIDDEN"
         }
 
         if (currentGUI == tGui) {
