@@ -104,79 +104,6 @@ timerGui := build_timer()
         testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
     }
 
-!5::
-    {
-        ;       y896
-        ; x2           x267
-        ;       y1063
-
-        xPos := 2
-        yPos := 896
-        nPositions := []
-        while (xPos <= 267) {
-            c := PixelGetColor(xPos, yPos)
-            if (c == "0x000000") {
-                nPositions.push({x:xPos, y:yPos})
-            }
-            xPos := xPos + 5
-        }
-        xPos := xPos - 5
-        while (yPos <= 1063) {
-            c := PixelGetColor(xPos, yPos)
-            if (c == "0x000000") {
-                nPositions.push({x:xPos, y:yPos})
-            }
-            yPos := yPos + 5
-        }
-        yPos := yPos - 5
-        while (xPos >= 2) {
-            c := PixelGetColor(xPos, yPos)
-            if (c == "0x000000") {
-                nPositions.push({x:xPos, y:yPos})
-            }
-            xPos := xPos - 5
-        }
-        xPos := xPos + 5
-        while (yPos >= 896) {
-            c := PixelGetColor(xPos, yPos)
-            if (c == "0x000000") {
-                nPositions.push({x:xPos, y:yPos})
-            }
-            yPos := yPos - 5
-        }
-        yPos := yPos + 5
-
-        global testGUI
-        testGUI.Destroy()
-
-        testGUI := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
-        testGUI.BackColor := "black"
-
-        yOffset := 0
-        cc := 0
-        xPosAv := 0
-        yPosAv := 0
-        for nPosition in nPositions {
-            yOffset := yOffset + add_text_to_gui(testGUI, 15, 10 + yOffset, [{text:"x" . nPosition.x . " y" . nPosition.y}])
-
-            cc := cc + 1
-            xPosAv := xPosAv + nPosition.x
-            yPosAv := yPosAv + nPosition.y
-        }
-        xPosAv := Round(xPosAv/cc)
-        yPosAv := Round(yPosAv/cc)
-        add_text_to_gui(testGUI, 15, 10 + yOffset + 15, [{text:"x" . xPosAv . " y" . yPosAv}])
-
-        CoordMode("Mouse", "Screen")
-        MouseGetPos(&mouseXposScreen, &mouseYposScreen)
-
-        WinSetTransparent(180, testGUI)
-        testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
-
-        SendMode("Play")
-        MouseMove(10, 0, 50, "R")
-    }
-
 !9::
     {
         start_timer()
@@ -306,6 +233,11 @@ timerGui := build_timer()
 !R::
     {
         Reload
+    }
+
+!X::
+    {
+        ExitApp
     }
 
 +F12::
@@ -465,6 +397,15 @@ timerGui := build_timer()
             {text:"Вы имеете право хранить молчание. Всё, что вы скажете, может быть исп. против Вас."},
             {text:"Вы имеете право на один телефонный звонок. Также вы имеете право на адвоката."},
             {text:"Если вам необходим адвокат, он будет для Вас запрошен. Вам ясны ваши права?"},
+        ])
+
+        add_text_to_gui(myGui, 1160, 5, [
+            {text:"Стадий применения силы", style: "U"},
+            {text:"- Присутствие"},
+            {text:"- Приказ"},
+            {text:"- Применение физической силы"},
+            {text:"- Применение специальных средств"},
+            {text:"- Применение огнестрельного оружия"},
         ])
 
         coordY := 5
