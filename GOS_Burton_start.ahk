@@ -98,7 +98,9 @@ timerGui := build_timer()
 
         c := PixelGetColor(mouseXposWindow, mouseYposWindow)
 
-        add_text_to_gui(testGUI, 15, 10, [{text:"x" . mouseXposScreen . " y" . mouseYposScreen . " x" . mouseXposWindow . " y" . mouseYposWindow . " " . c}])
+        add_text_to_gui(testGUI, 10, 5, [{text:"Screen: x" . mouseXposScreen . " y" . mouseYposScreen}])
+        add_text_to_gui(testGUI, 10, 20, [{text:"Window: x" . mouseXposWindow . " y" . mouseYposWindow}])
+        add_text_to_gui(testGUI, 10, 35, [{text:"Color: " . c}])
 
         WinSetTransparent(180, testGUI)
         testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
