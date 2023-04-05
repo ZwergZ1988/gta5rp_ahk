@@ -536,6 +536,38 @@ timerGui := build_timer()
             {text:"10-20 - Текущее местоположение"},
             {text:"10-77 - Расчётное время прибытия"},])
 
+        coordY := 5
+        offsetY := add_text_to_gui(myGui, 10, coordY, [
+            {text:"Животные:", style: "U"},
+            {text:"Распространенные: кролик, кабан"},
+            {text:"Редкие: олень, койот"},
+            {text:"Повышенной редкости: пума"},
+        ])
+
+        coordY := coordY + offsetY + 10
+        offsetY := add_text_to_gui(myGui, 10, coordY, [
+            {text:"Виды рыб (без лиц / с лиц):", style: "U"},
+            {text:"Распространенные: стерлядь, лосось, осетр "},
+            {text:"Редкие: чёрный амур, скат, тунец"},
+            {text:"Повышенной редкости: мальма, фугу"},
+        ])
+
+        coordY := 5
+        offsetY := add_text_to_gui(myGui, 300, coordY, [
+            {text:"без необходимых лицензий, до 25.000$", color: "cRed"},
+            {text:"30 кг 3.000$ за каждый килограмм", color: "cRed"},
+            {text:"20 кг 5.000$ за каждый килограмм", color: "cRed"},
+            {text:"10 кг 10.000$ за каждый килограмм", color: "cRed"},
+        ])
+
+        coordY := coordY + offsetY + 10
+        offsetY := add_text_to_gui(myGui, 300, coordY, [
+            {text:"без необходимых лицензий, от 15.000$ до 30.000$", color: "cRed"},
+            {text:"25 / 50 кг 3.000$ / 1.000$ за каждый килограмм", color: "cRed"},
+            {text:"15 / 30 кг 5.000$ / 2.500$ за каждый килограмм", color: "cRed"},
+            {text:"5 / 15 кг 10.000$ / 5.000$  за каждый килограмм", color: "cRed"},
+        ])
+
         WinSetTransparent(180, myGui)
         return myGui
     }
