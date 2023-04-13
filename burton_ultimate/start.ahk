@@ -1,4 +1,5 @@
 #SingleInstance
+#Include "%A_ScriptDir%\include\alarm.ahk"
 #Include "%A_ScriptDir%\include\chat.ahk"
 #Include "%A_ScriptDir%\include\dorozhn_kod.ahk"
 #Include "%A_ScriptDir%\include\gui.ahk"
@@ -63,6 +64,11 @@ SendMode("Input")
 !4::
   {
     show_helper_gui()
+  }
+
+!8::
+  {
+    start_alarm()
   }
 
 !9::
