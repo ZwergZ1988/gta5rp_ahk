@@ -31,6 +31,24 @@ build_law_search_gui() {
     return Gui()
   }
 
+  searchText := inputObj.Value
+
+  if (IsInteger(StrReplace(searchText, "ю"))) {
+    searchText := StrReplace(searchText, "ю", ".")
+  }
+
+  if (IsInteger(StrReplace(searchText, "-"))) {
+    searchText := StrReplace(searchText, "-", ".")
+  }
+
+  if (IsInteger(StrReplace(searchText, "?"))) {
+    searchText := StrReplace(searchText, "?", ".")
+  }
+
+  if (IsInteger(StrReplace(searchText, ">"))) {
+    searchText := StrReplace(searchText, ">", ".")
+  }
+
   foundAkty := Map()
 
   for aktKey, akt in akty {
@@ -39,7 +57,7 @@ build_law_search_gui() {
       for glava in razdel.glavy {
         for zakon in glava.zakony {
           for stro4ka in zakon.stro4ki {
-            if (InStr(zakon.nomer, inputObj.Value, "Locale") or InStr(stro4ka, inputObj.Value, "Locale")) {
+            if (InStr(zakon.nomer, searchText, "Locale") or InStr(stro4ka, searchText, "Locale")) {
               foundAkty[aktKey].zakony.push({razdel: razdel.name, glava: glava.name, zakon: zakon})
               break
             }
