@@ -1,72 +1,71 @@
 alarmStatus := "DISABLED"
 seconds := 0
-alarmGui := build_alarm()
+alarmGui := Gui()
 
-build_alarm() {
+do_alarm_tick() {
+  global alarmGui
   global alarmStatus
   global seconds
-  myGui := Gui()
-  While (true) {
-    if (alarmStatus == "START") {
-      startTimeStamp := 0
-      timeBuffer := FormatTime(, "HH")
-      startTimeStamp := startTimeStamp + timeBuffer * 3600
-      timeBuffer := FormatTime(, "mm")
-      startTimeStamp := startTimeStamp + timeBuffer * 60
-      timeBuffer := FormatTime(, "ss")
-      startTimeStamp := startTimeStamp + timeBuffer
-      alarmStatus := "STARTED"
+  global startAlarmStamp
+
+  if (alarmStatus == "START") {
+    startAlarmStamp := 0
+    timeBuffer := FormatTime(, "HH")
+    startAlarmStamp := startAlarmStamp + timeBuffer * 3600
+    timeBuffer := FormatTime(, "mm")
+    startAlarmStamp := startAlarmStamp + timeBuffer * 60
+    timeBuffer := FormatTime(, "ss")
+    startAlarmStamp := startAlarmStamp + timeBuffer
+    alarmStatus := "STARTED"
+  }
+  if (alarmStatus == "STARTED") {
+    timeStamp := 0
+    timeBuffer := FormatTime(, "HH")
+    timeStamp := timeStamp + timeBuffer * 3600
+    timeBuffer := FormatTime(, "mm")
+    timeStamp := timeStamp + timeBuffer * 60
+    timeBuffer := FormatTime(, "ss")
+    timeStamp := timeStamp + timeBuffer
+
+    secondsRemaining := seconds - (timeStamp - startAlarmStamp)
+
+    if (secondsRemaining <= 0) {
+      secondsRemaining := seconds
+      alarmStatus := "ALARM"
     }
-    if (alarmStatus == "STARTED") {
-      timeStamp := 0
-      timeBuffer := FormatTime(, "HH")
-      timeStamp := timeStamp + timeBuffer * 3600
-      timeBuffer := FormatTime(, "mm")
-      timeStamp := timeStamp + timeBuffer * 60
-      timeBuffer := FormatTime(, "ss")
-      timeStamp := timeStamp + timeBuffer
 
-      secondsRemaining := seconds - (timeStamp - startTimeStamp)
+    hoursRemaining := Floor(secondsRemaining / 3600)
+    secondsRemaining := secondsRemaining - hoursRemaining * 3600
+    minutesRemaining := Floor(secondsRemaining / 60)
+    secondsRemaining := secondsRemaining - minutesRemaining * 60
 
-      if (secondsRemaining <= 0) {
-        secondsRemaining := seconds
-        alarmStatus := "ALARM"
-      }
+    hoursRemaining := SubStr("0" . hoursRemaining, -2)
+    minutesRemaining := SubStr("0" . minutesRemaining, -2)
+    secondsRemaining := SubStr("0" . secondsRemaining, -2)
 
-      hoursRemaining := Floor(secondsRemaining / 3600)
-      secondsRemaining := secondsRemaining - hoursRemaining * 3600
-      minutesRemaining := Floor(secondsRemaining / 60)
-      secondsRemaining := secondsRemaining - minutesRemaining * 60
+    timeRemaining := hoursRemaining . ":" . minutesRemaining . ":" . secondsRemaining
 
-      hoursRemaining := SubStr("0" . hoursRemaining, -2)
-      minutesRemaining := SubStr("0" . minutesRemaining, -2)
-      secondsRemaining := SubStr("0" . secondsRemaining, -2)
+    alarmGui.Destroy()
 
-      timeRemaining := hoursRemaining . ":" . minutesRemaining . ":" . secondsRemaining
-
-      myGui.Destroy()
-
-      myGui := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
-      if (alarmStatus == "ALARM") {
-        myGui.BackColor := "red"
-      } else {
-        myGui.BackColor := "black"
-      }
-
-      add_text_to_gui(myGui, 15, 10, [{text:timeRemaining, height:20}])
-
-      WinSetTransparent(180, myGui)
-      myGui.Show("x1780 y930 NoActivate")
-      if (alarmStatus == "ALARM") {
-        SoundPlay(A_WinDir "\Media\Alarm01.wav", "WAIT")
-        alarmStatus := "DISABLE"
-      }
+    alarmGui := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Timer")
+    if (alarmStatus == "ALARM") {
+      alarmGui.BackColor := "red"
+    } else {
+      alarmGui.BackColor := "black"
     }
-    if (alarmStatus == "DISABLE") {
-      myGui.Hide()
-      alarmStatus := "DISABLED"
+
+    add_text_to_gui(alarmGui, 15, 10, [{text:timeRemaining, height:20}])
+
+    WinSetTransparent(180, alarmGui)
+    alarmGui.Show("x1780 y930 NoActivate")
+    if (alarmStatus == "ALARM") {
+      SoundPlay(A_WinDir "\Media\Alarm01.wav", "WAIT")
+      alarmStatus := "DISABLE"
     }
-    Sleep 1000
+  }
+  if (alarmStatus == "DISABLE") {
+    alarmGui.Hide()
+    alarmStatus := "DISABLED"
   }
 }
 
@@ -90,3 +89,5 @@ disable_alarm() {
   alarmStatus := "DISABLE"
   seconds := 0
 }
+
+register_workitem(do_alarm_tick)

@@ -1,4 +1,5 @@
 #SingleInstance
+#Include "%A_ScriptDir%\include\worker.ahk"
 #Include "%A_ScriptDir%\include\alarm.ahk"
 #Include "%A_ScriptDir%\include\chat.ahk"
 #Include "%A_ScriptDir%\include\dorozhn_kod.ahk"
@@ -79,6 +80,7 @@ SendMode("Input")
 !0::
   {
     disable_timer()
+    disable_alarm()
   }
 
 ;!F3::
@@ -211,3 +213,5 @@ SendMode("Input")
   {
     Pause
   }
+
+  work()
