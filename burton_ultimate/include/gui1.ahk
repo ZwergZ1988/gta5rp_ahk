@@ -2,10 +2,15 @@ build_gui_1() {
   myGui := Gui("+LastFound +AlwaysOnTop -Caption +ToolWindow", "Found Zakon")
   myGui.BackColor := "black"
 
-  ;12.6
-  ;12.7
-  ;17.3
-  ;17.4
+  shpora_yk := get_shpora_yk()
+
+  coordY := 130
+  for (shpora_yk_line in shpora_yk) {
+    offsetY := add_text_to_gui(myGui, 10, coordY, [{text:shpora_yk_line.nomer, style: "U"}])
+    add_text_to_gui(myGui, 55, coordY, [{text:shpora_yk_line.text}])
+    add_text_to_gui(myGui, 300, coordY, [{text:shpora_yk_line.nakaz, color: "cRed"}])
+    coordY := coordY + offsetY
+  }
 
   add_text_to_gui(myGui, 1160, 200, [
     {text:"Стадии применения силы", style: "U"},
