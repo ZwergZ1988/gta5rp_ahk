@@ -8,7 +8,7 @@ build_gui_1() {
   for (shpora_yk_line in shpora_yk) {
     offsetY := add_text_to_gui(myGui, 10, coordY, [{text:shpora_yk_line.nomer, style: "U"}])
     add_text_to_gui(myGui, 55, coordY, [{text:shpora_yk_line.text}])
-    add_text_to_gui(myGui, 300, coordY, [{text:shpora_yk_line.nakaz, color: "cRed"}])
+    add_text_to_gui(myGui, 300, coordY, [{text:shpora_yk_line.nakaz, color: shpora_yk_line.color}])
     coordY := coordY + offsetY
   }
 
