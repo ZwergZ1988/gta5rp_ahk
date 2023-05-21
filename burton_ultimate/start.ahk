@@ -108,7 +108,7 @@ SendMode("Input")
 
 +F5::
   {
-    paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSPD | D.Head CPD | 2863 ] .")
+    paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSPD | CPD | 2863 ] .")
   }
 
 +F6::
