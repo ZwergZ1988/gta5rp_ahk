@@ -1,4 +1,7 @@
 #SingleInstance
+
+screenResolution := "2K"
+
 #Include "%A_ScriptDir%\include\worker.ahk"
 #Include "%A_ScriptDir%\include\alarm.ahk"
 #Include "%A_ScriptDir%\include\chat.ahk"
@@ -103,13 +106,13 @@ SendMode("Input")
 
 +F4::
   {
-    paste_message_in_chat_and_submit("/b", ">>>> ZwergZ#3560 <<<<")
+    paste_message_in_chat_and_submit("/b", ">>>> ZwergZ <<<<")
   }
 
-+F5::
-  {
-    paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSPD | CPD | 2863 ] .")
-  }
+;+F5::
+;  {
+;    paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSSD | SPD | 2863 ] .")
+;  }
 
 +F6::
   {
@@ -132,11 +135,15 @@ SendMode("Input")
 
 +F9::
   {
-    paste_message_in_chat_and_submit("/me", "присмотрелся к замку водительской двери автомобиля")
-    paste_message_in_chat_and_submit("/do", "На машине есть следы взлома.")
-    paste_message_in_chat_and_submit("/me", "достал планшет и подключил его через провод к сигнализации машины")
-    paste_message_in_chat_and_submit("/me", "считал данные с системы сигнализации машины на предмет угона")
-    paste_message_in_chat_and_submit("/do", "Этa машина находится в угоне.")
+    paste_message_in_chat_and_submit("/do", "Чемодан со спец. средствами LSPD находится в багажнике.")
+    paste_message_in_chat_and_submit("/me", "открыл багажник автомобиля правой рукой и взял чемодан, закрыл багажник")
+    paste_message_in_chat_and_submit("/me", "открыл чемодан, достал из него магнитный порошок и обработал им замок автомобиля")
+    paste_message_in_chat_and_submit("/try", "обнаружил следы взлома в замке ")
+    paste_message_in_chat_and_submit("/me", "достал из чемодана лупу и внимательно осмотрел дверь на следы повреждения замка")
+    paste_message_in_chat_and_submit("/try", "нашел следы повреждения замка инородным предметом ")
+    paste_message_in_chat_and_submit("/me", "осмотрел с помощью лупы замок на наличие инородных предметов")
+    paste_message_in_chat_and_submit("/try", "обнаружил инородные предметы в замке  ")
+
   }
 
 +F10::
@@ -149,12 +156,12 @@ SendMode("Input")
     paste_message_in_chat_and_submit("/m", "Водитель, остановите ТС и прижмитесь к обочине, при неповиновении мы будем вынуждены открыть огонь")
   }
 
-!F5::
-  {
-    paste_message_in_chat_and_submit("", "Вы имеете право хранить молчание. Всё, что вы скажете, может быть исп. против Вас.")
-    paste_message_in_chat_and_submit("", "Вы имеете право на один телефонный звонок. Также вы имеете право на адвоката.")
-    paste_message_in_chat_and_submit("", "Если вам необходим адвокат, он будет для Вас запрошен.")
-  }
+;!F5::
+;  {
+;    paste_message_in_chat_and_submit("", "Вы имеете право хранить молчание. Всё, что вы скажете, может быть исп. против Вас.")
+;    paste_message_in_chat_and_submit("", "Вы имеете право на один телефонный звонок. Также вы имеете право на адвоката.")
+;    paste_message_in_chat_and_submit("", "Если вам необходим адвокат, он будет для Вас запрошен.")
+;  }
 
 !F7::
   {

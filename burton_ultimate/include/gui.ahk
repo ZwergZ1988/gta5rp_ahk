@@ -31,6 +31,11 @@ show_helper_gui() {
   testGUI.Show("x" . mouseXposScreen . " y" . mouseYposScreen . " NoActivate")
 }
 
+add_text_to_gui_coord(myGui, coord, textLines) {
+  global screenResolution
+  add_text_to_gui(myGui, coord[screenResolution].x, coord[screenResolution].y, textLines)
+}
+
 add_text_to_gui(myGui, coordX, coordY, textLines) {
   offsetY := 0
   for index, textLine in textLines {
