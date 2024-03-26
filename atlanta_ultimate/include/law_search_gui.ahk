@@ -82,24 +82,21 @@ build_law_search_gui() {
         newOffset := add_text_to_gui(myGui, 5, offsetY, [{text:foundZakon.glava, height:10, color: "cAqua"}])
         offsetY := offsetY + newOffset
 
-        if (foundZakon.zakon.HasOwnProp("chast")) {
-          switch(foundZakon.zakon.chast) {
-          case "🟢": zakonColor := "c16C60C"
-          case "🟡": zakonColor := "cFFF100"
-          default: zakonColor := "cWhite"
-          }
-        } else {
-          zakonColor := "cWhite"
-        }
+        zakonColor := "cWhite"
 
         newOffset := add_text_to_gui(myGui, 5, offsetY, [{text:foundZakon.zakon.nomer, height:10, color: zakonColor}])
 
         if (foundZakon.zakon.HasOwnProp("tip")) {
-          newOffset := add_text_to_gui(myGui, 5, offsetY + 15, [{text:foundZakon.zakon.tip, height:10, color: "c007ACC"}])
+          newOffset := add_text_to_gui(myGui, 5, offsetY + 15, [{text:foundZakon.zakon.tip, height:10, color: zakonColor}])
         }
 
         for stro4ka in foundZakon.zakon.stro4ki {
           newOffset := add_text_to_gui(myGui, 100, offsetY, [{text:stro4ka, height:10}])
+          offsetY := offsetY + newOffset
+        }
+
+        if (foundZakon.zakon.HasOwnProp("prioritet")) {^^^^
+          newOffset := add_text_to_gui(myGui, 100, offsetY, [{text:foundZakon.zakon.prioritet, height:10, color: "cRed"}])
           offsetY := offsetY + newOffset
         }
 
