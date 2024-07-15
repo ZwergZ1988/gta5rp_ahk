@@ -95,7 +95,7 @@ build_law_search_gui() {
           offsetY := offsetY + newOffset
         }
 
-        if (foundZakon.zakon.HasOwnProp("prioritet")) {^^^^
+        if (foundZakon.zakon.HasOwnProp("prioritet")) {
           newOffset := add_text_to_gui(myGui, 100, offsetY, [{text:foundZakon.zakon.prioritet, height:10, color: "cRed"}])
           offsetY := offsetY + newOffset
         }
