@@ -109,10 +109,11 @@ SendMode("Input")
     paste_message_in_chat_and_submit("/b", ">>>> ZwergZ <<<<")
   }
 
-;+F5::
-;  {
-;    paste_message_in_chat_and_submit("/do", "На форме жетон: [ LSSD | SPD | 2863 ] .")
-;  }
++F5::
+  {
+    ;paste_message_in_chat_and_submit("/do", "На форме нашивка: [ PA | Demion Soprano | 74789 ] .")
+    type_message_in_chat_and_submit("/do", "На груди висит бейджик: [ CPD | Demion Soprano | 74789 ] .")
+  }
 
 +F6::
   {

@@ -59,6 +59,7 @@ paste_message_in_chat_and_submit(chat, message) {
     sleep 100
   } else {
     SendInput(chat . "{Space}")
+    sleep 1000
   }
   paste(message)
   SendInput("{enter}")
